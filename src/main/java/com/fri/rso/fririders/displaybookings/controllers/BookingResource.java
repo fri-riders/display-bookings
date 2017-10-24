@@ -1,13 +1,16 @@
 package com.fri.rso.fririders.displaybookings.controllers;
 
 
-import com.fri.rso.fririders.displaybookings.database.Booking;
+import com.fri.rso.fririders.displaybookings.entities.Accommodation;
+import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
 
 import javax.ws.rs.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,6 +21,18 @@ public class BookingResource {
 
     private static final Logger logger = Logger.getLogger( BookingResource.class.getName() );
 
+    private static Client client = ClientBuilder.newClient();
+
+    /*
+    * 'accommodations' microservice url
+    * */
+    private static String accommodationsHost = "http://localhost";
+
+    /*
+    * 'accommodations' microservice port
+    * */
+    private static String accommodationsPort = "3001";
+
     @GET
     public Response getAllBookings() {
         logger.info("REST CALL: getAllBookings");
@@ -27,8 +42,8 @@ public class BookingResource {
             return Response.ok(bookings).build();
         }
         else {
-            logger.warning("Zero bokings found");
-            return Response.status(Response.Status.NOT_FOUND).build();
+            logger.warning("Zero bookings found");
+            return Response.status(Response.Status.NOT_FOUND).entity("Zero bookings found.").build();
         }
     }
 
@@ -37,10 +52,31 @@ public class BookingResource {
     public Response getBooking(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: getBooking.");
         Booking booking = Database.getBooking(bookingId);
-        if(booking != null)
+        if(booking != null) {
             return Response.ok(booking).build();
+        }
         else
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
+    }
+
+    @GET
+    @Path("/{bookingId}/accommodation")
+    public Response getBookingAccommodation(@PathParam("bookingId") int bookingId) {
+        logger.info("REST CALL: getBookingAccommodation.");
+        Booking booking = Database.getBooking(bookingId);
+        if(booking != null) {
+            //find info about accommodation
+            List<Accommodation> accommodations =
+                    client.target(this.accommodationsHost + ":" + this.accommodationsPort + "/accommodations/all")
+                            .request(MediaType.APPLICATION_JSON)
+                            .get((new GenericType<List<Accommodation>>() {}));
+            for(Accommodation a : accommodations)
+                if(a.getId() == booking.getId())
+                    return Response.ok(a).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
     }
 
     @POST
@@ -52,7 +88,7 @@ public class BookingResource {
         }
         catch (Exception e){
             logger.warning(e.getMessage());
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
         }
     }
 
@@ -66,7 +102,7 @@ public class BookingResource {
         }
         catch (Exception e){
             logger.warning(e.getMessage());
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
         }
     }
 }

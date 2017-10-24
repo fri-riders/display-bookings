@@ -1,4 +1,4 @@
-package com.fri.rso.fririders.displaybookings.database;
+package com.fri.rso.fririders.displaybookings.entities;
 
 import java.util.Date;
 

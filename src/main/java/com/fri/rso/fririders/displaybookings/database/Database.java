@@ -1,6 +1,9 @@
 package com.fri.rso.fririders.displaybookings.database;
 
+import com.fri.rso.fririders.displaybookings.entities.Booking;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Database {
@@ -9,6 +12,12 @@ public class Database {
 
     public static List<Booking> getBookings() {
         return bookings;
+    }
+
+    // fake bookings
+    static {
+        bookings.add(new Booking(0,1,0,new Date(), new Date()));
+        bookings.add(new Booking(1,2,1,new Date(), new Date()));
     }
 
     public static Booking getBooking(int bookingId) {
