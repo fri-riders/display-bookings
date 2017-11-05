@@ -7,21 +7,21 @@
     <groupId>com.fri.rso.fririders</groupId>
     <artifactId>display-bookings</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kumuluzee.version>2.4.1</kumuluzee.version>
+        <kumuluzee.version>2.5.0-SNAPSHOT</kumuluzee.version>
+        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.kumuluz.ee</groupId>
-                <artifactId>kumuluzee</artifactId>
+                <artifactId>kumuluzee-bom</artifactId>
                 <version>${kumuluzee.version}</version>
                 <type>pom</type>
                 <scope>import</scope> <!-- ta import je nujen, sicer je treba spodaj pri dependencijih verzije dopisovati -->
@@ -43,9 +43,18 @@
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0</version>
+            <groupId>com.kumuluz.ee.logs</groupId>
+            <artifactId>kumuluzee-logs-log4j2</artifactId>
+            <version>${kumuluzee-logs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-etcd</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
         </dependency>
     </dependencies>
 

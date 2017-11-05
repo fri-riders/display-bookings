@@ -1,0 +1,11 @@
+kumuluzee:
+  name: display-bookings
+  version: 1.0.0
+  env:
+    name: dev
+  config:
+    etcd:
+      hosts: http://localhost:2379
+
+bookings-config:
+  insert-enabled: true
