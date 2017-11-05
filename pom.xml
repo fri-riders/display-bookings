@@ -14,6 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kumuluzee.version>2.5.0-SNAPSHOT</kumuluzee.version>
+        <kumuluzee-maven.version>2.4.1</kumuluzee-maven.version>
         <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
     </properties>
 
@@ -63,7 +64,7 @@
             <plugin>
                 <groupId>com.kumuluz.ee</groupId>
                 <artifactId>kumuluzee-maven-plugin</artifactId>
-                <version>${kumuluzee.version}</version>
+                <version>${kumuluzee-maven.version}</version>
                 <executions>
                     <execution>
                         <id>package</id>
