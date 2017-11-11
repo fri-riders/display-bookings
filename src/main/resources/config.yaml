@@ -4,8 +4,12 @@ kumuluzee:
   env:
     name: dev
   config:
-    etcd:
-      hosts: http://localhost:2379
+      start-retry-delay-ms: 500
+      max-retry-delay-ms: 900000
+      consul:
+        agent: http://192.168.99.100:8500
+      #etcd:
+      #  hosts: http://192.168.99.100:2379
 
 bookings-config:
   insert-enabled: true

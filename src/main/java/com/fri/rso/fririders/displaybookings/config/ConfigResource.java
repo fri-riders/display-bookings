@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
 
 @RequestScoped
 @Path("/config")
@@ -14,9 +15,13 @@ public class ConfigResource {
     @Inject
     private ConfigProperties properties;
 
+    private static final Logger logger = Logger.getLogger( ConfigResource.class.getName() );
+
     @GET
     @Path("")
     public Response getProperties() {
+        logger.info("Is insert enabled: " + properties.isInsertEnabled());
+
         String response =
                 "{\"booleanProperty\": %b}";
 
