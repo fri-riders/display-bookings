@@ -8,8 +8,15 @@ kumuluzee:
       max-retry-delay-ms: 900000
       consul:
         agent: http://192.168.99.100:8500
+        hosts: http://192.168.99.100:8500
       #etcd:
       #  hosts: http://192.168.99.100:2379
+  discovery:
+      ttl: 30
+      ping-interval: 5
+      consul:
+        agent: http://192.168.99.100:8500
+        hosts: http://192.168.99.100:8500
 
 bookings-config:
   insert-enabled: true

@@ -5,6 +5,8 @@ import com.fri.rso.fririders.displaybookings.config.ConfigProperties;
 import com.fri.rso.fririders.displaybookings.entities.Accommodation;
 import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
+import com.fri.rso.fririders.displaybookings.entities.User;
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -40,6 +43,15 @@ public class BookingResource {
     * 'accommodations' microservice port
     * */
     private static String accommodationsPort = "3001";
+
+    @Inject
+    @DiscoverService(value = "rso-accommodations", version = "1.0.x", environment = "dev")
+    private Optional<String> accommodationsUrl;
+
+    @Inject
+    @DiscoverService(value="rso-users", version = "1.0.x", environment = "dev")
+    private Optional<String> usersUrl;
+
 
     @GET
     public Response getAllBookings() {
@@ -71,16 +83,42 @@ public class BookingResource {
     @Path("/{bookingId}/accommodation")
     public Response getBookingAccommodation(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: getBookingAccommodation.");
+        if (!this.accommodationsUrl.isPresent())
+            return Response.status(Response.Status.NOT_FOUND).entity("Accommodations service cannot be reached.").build();
+
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
             //find info about accommodation
             List<Accommodation> accommodations =
-                    client.target(this.accommodationsHost + ":" + this.accommodationsPort + "/accommodations/all")
+                    client.target(this.accommodationsUrl.get() + "/accommodations/all")
                             .request(MediaType.APPLICATION_JSON)
                             .get((new GenericType<List<Accommodation>>() {}));
             for(Accommodation a : accommodations)
                 if(a.getId() == booking.getId())
                     return Response.ok(a).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
+    }
+
+    @GET
+    @Path("/{bookingId}/owner")
+    public Response getBookingOwner(@PathParam("bookingId") int bookingId) {
+        logger.info("REST CALL: getBookingOwner.");
+        if (!this.usersUrl.isPresent())
+            return Response.status(Response.Status.NOT_FOUND).entity("Users service cannot be reached.").build();
+
+        Booking booking = Database.getBooking(bookingId);
+        if(booking != null) {
+            //find info about owner
+            int userId = booking.getIdUser();
+            User user =
+                    client.target(this.usersUrl.get() + "/" + userId)
+                            .request(MediaType.APPLICATION_JSON)
+                            .get((new GenericType<User>() {}));
+            if (user != null)
+                    return Response.ok(user).build();
             return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
         }
         else
