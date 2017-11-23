@@ -3,31 +3,33 @@ kumuluzee:
   version: 1.0.0
   env:
     name: dev
+  server:
+    http:
+      port: 8080
   config:
-      start-retry-delay-ms: 500
-      max-retry-delay-ms: 900000
-      consul:
-        agent: http://192.168.99.100:8500
-        hosts: http://192.168.99.100:8500
-      #etcd:
-      #  hosts: http://192.168.99.100:2379
+    start-retry-delay-ms: 500
+    max-retry-delay-ms: 900000
+    consul:
+      agent: http://localhost:8500
   discovery:
-      ttl: 30
-      ping-interval: 5
-      consul:
-        agent: http://192.168.99.100:8500
-        hosts: http://192.168.99.100:8500
+    ttl: 20
+    ping-interval: 15
+    consul:
+      agent: http://localhost:8500
   health:
-      servlet:
-        mapping: /health
-        enabled: true
-      logs:
-        enabled: true
-        level: INFO
-        period-s: 30
+    servlet:
+      mapping: /health
+      enabled: true
+    logs:
+      enabled: true
+      level: INFO
+      period-s: 30
+    checks:
+      disk-space-health-check:
+        threshold: 100000000
   cors-filter:
-      servlet:
-        allow-origin: "*"
+    servlet:
+      allow-origin: "*"
 
 bookings-config:
   insert-enabled: true

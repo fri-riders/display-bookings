@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       labels:
-        app: rso
+        app: display-bookings
     spec:
       containers:
       - image: urosbajc/display-bookings
@@ -21,20 +21,32 @@ spec:
             value: http://consul:8500
           #- name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           #  value: jdbc:postgresql://postgres-customers:5432/customer
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: server
+          initialDelaySeconds: 20
+          periodSeconds: 3
         ports:
         - containerPort: 8080
           name: server
           protocol: TCP
+        resources:
+          requests:
+            cpu: 500m
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: display-bookings
+  labels:
+    app: display-bookings
 spec:
   type: NodePort
   ports:
-  - port: 8080
+  - name: server
+    port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
