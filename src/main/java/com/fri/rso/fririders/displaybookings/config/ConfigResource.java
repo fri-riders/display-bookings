@@ -23,11 +23,12 @@ public class ConfigResource {
         logger.info("Is insert enabled: " + properties.isInsertEnabled());
 
         String response =
-                "{\"booleanProperty\": %b}";
+                "{\"Insert enabled\": %b}{\"Instance healthy\": %b}";
 
         response = String.format(
                 response,
-                properties.isInsertEnabled());
+                properties.isInsertEnabled(),
+                properties.isHealthy());
 
         return Response.ok(response).build();
     }

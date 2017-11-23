@@ -1,3 +1,5 @@
+#Display bookings service
+
 IBM CLOUD
 -
 0. 
@@ -8,9 +10,14 @@ IBM CLOUD
 4. kubectl get nodes
 5. kubectl proxy
 
-OSTALO
+Docker compose
 -
-...
+- Build app: mvn clean package
+- Run: docker-compose up --build
+
+App is accessible on port 8080.
+
+(Example call: [IP]:8080/v1/bookings)
    
 
    

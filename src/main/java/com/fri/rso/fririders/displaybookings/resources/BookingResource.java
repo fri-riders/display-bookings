@@ -1,4 +1,4 @@
-package com.fri.rso.fririders.displaybookings.controllers;
+package com.fri.rso.fririders.displaybookings.resources;
 
 
 import com.fri.rso.fririders.displaybookings.config.ConfigProperties;

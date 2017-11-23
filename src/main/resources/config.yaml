@@ -17,6 +17,18 @@ kumuluzee:
       consul:
         agent: http://192.168.99.100:8500
         hosts: http://192.168.99.100:8500
+  health:
+      servlet:
+        mapping: /health
+        enabled: true
+      logs:
+        enabled: true
+        level: INFO
+        period-s: 30
+  cors-filter:
+      servlet:
+        allow-origin: "*"
 
 bookings-config:
   insert-enabled: true
+  healthy: true
