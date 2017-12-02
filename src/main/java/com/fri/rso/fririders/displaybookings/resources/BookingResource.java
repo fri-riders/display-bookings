@@ -7,6 +7,7 @@ import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
 import com.fri.rso.fririders.displaybookings.entities.User;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import org.eclipse.microprofile.metrics.annotation.Metered;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public class BookingResource {
 
 
     @GET
+    @Metered
     public Response getAllBookings() {
         logger.info("REST CALL: getAllBookings");
         List<Booking> bookings = Database.getBookings();

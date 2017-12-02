@@ -32,6 +32,8 @@ kumuluzee:
       allow-origin: "*"
   metrics:
     web-instrumentation:
+      - name: metrics-endpoint
+        url-pattern: /metrics/*
       - name: bookings-endpoint
         url-pattern: /v1/bookings/*
 
