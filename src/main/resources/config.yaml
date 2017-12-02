@@ -30,6 +30,10 @@ kumuluzee:
   cors-filter:
     servlet:
       allow-origin: "*"
+  metrics:
+    web-instrumentation:
+      - name: bookings-endpoint
+        url-pattern: /v1/bookings/*
 
 bookings-config:
   insert-enabled: true
