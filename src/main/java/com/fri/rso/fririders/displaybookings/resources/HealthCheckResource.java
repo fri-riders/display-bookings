@@ -3,6 +3,7 @@ package com.fri.rso.fririders.displaybookings.resources;
 
 import com.fri.rso.fririders.displaybookings.config.ConfigProperties;
 import com.kumuluz.ee.common.runtime.EeRuntime;
+import com.kumuluz.ee.logs.cdi.Log;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("health-demo")
+@Log
 public class HealthCheckResource {
 
     @Inject

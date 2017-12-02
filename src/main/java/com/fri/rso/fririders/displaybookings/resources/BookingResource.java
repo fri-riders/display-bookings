@@ -7,6 +7,7 @@ import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
 import com.fri.rso.fririders.displaybookings.entities.User;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 
 import javax.enterprise.context.RequestScoped;
@@ -26,6 +27,8 @@ import java.util.logging.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("bookings")
+@Log
+@Metered
 public class BookingResource {
 
     private static final Logger logger = Logger.getLogger( BookingResource.class.getName() );
