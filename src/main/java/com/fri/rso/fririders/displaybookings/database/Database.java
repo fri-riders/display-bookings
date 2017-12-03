@@ -16,8 +16,8 @@ public class Database {
 
     // fake bookings
     static {
-        bookings.add(new Booking(0,1,0,new Date(), new Date()));
-        bookings.add(new Booking(1,2,1,new Date(), new Date()));
+        bookings.add(new Booking(0,1,0,new Date(), new Date(), 2));
+        bookings.add(new Booking(1,2,1,new Date(), new Date(), 3));
     }
 
     public static Booking getBooking(int bookingId) {

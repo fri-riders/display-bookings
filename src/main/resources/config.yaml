@@ -4,15 +4,22 @@ kumuluzee:
   env:
     name: dev
   server:
+    base-url: http://localhost:8080
     http:
       port: 8080
+  datasources:
+    - jndi-name: jdbc/BookingsDS
+      connection-url: jdbc:postgresql://192.168.99.100:5433/bookings
+      username: postgres
+      password: postgres
+      max-pool-size: 20
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
     consul:
       agent: http://localhost:8500
   discovery:
-    ttl: 20
+    ttl: 10
     ping-interval: 15
     consul:
       agent: http://localhost:8500

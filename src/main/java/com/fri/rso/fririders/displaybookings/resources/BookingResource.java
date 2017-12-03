@@ -6,6 +6,7 @@ import com.fri.rso.fririders.displaybookings.entities.Accommodation;
 import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
 import com.fri.rso.fririders.displaybookings.entities.User;
+import com.fri.rso.fririders.displaybookings.services.BookingsBean;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.metrics.annotation.Metered;
@@ -38,15 +39,9 @@ public class BookingResource {
     @Inject
     private ConfigProperties configProperties;
 
-    /*
-    * 'accommodations' microservice url
-    * */
-    private static String accommodationsHost = "http://localhost";
+    @Inject
+    private BookingsBean bookingsBean;
 
-    /*
-    * 'accommodations' microservice port
-    * */
-    private static String accommodationsPort = "3001";
 
     @Inject
     @DiscoverService(value = "rso-accommodations", version = "1.0.x", environment = "dev")
@@ -61,14 +56,15 @@ public class BookingResource {
     @Metered
     public Response getAllBookings() {
         logger.info("REST CALL: getAllBookings");
-        List<Booking> bookings = Database.getBookings();
-        if(bookings != null && bookings.size() > 0) {
+        //List<Booking> bookings = Database.getBookings();
+        try {
+            List<Booking> bookings = bookingsBean.getAllBookings();
             logger.info("Found "+ bookings.size() + " bookings.");
             return Response.ok(bookings).build();
         }
-        else {
-            logger.warning("Zero bookings found");
-            return Response.status(Response.Status.NOT_FOUND).entity("Zero bookings found.").build();
+        catch (Exception e) {
+            logger.severe(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
@@ -76,12 +72,15 @@ public class BookingResource {
     @Path("/{bookingId}")
     public Response getBooking(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: getBooking.");
-        Booking booking = Database.getBooking(bookingId);
-        if(booking != null) {
+        //Booking booking = Database.getBooking(bookingId);
+        try {
+            Booking booking = bookingsBean.getBooking(bookingId);
             return Response.ok(booking).build();
         }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
+        catch (Exception e) {
+            logger.severe(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @GET
@@ -91,8 +90,8 @@ public class BookingResource {
         if (!this.accommodationsUrl.isPresent())
             return Response.status(Response.Status.NOT_FOUND).entity("Accommodations service cannot be reached.").build();
 
-        Booking booking = Database.getBooking(bookingId);
-        if(booking != null) {
+        try {
+            Booking booking = bookingsBean.getBooking(bookingId);
             //find info about accommodation
             List<Accommodation> accommodations =
                     client.target(this.accommodationsUrl.get() + "/accommodations/all")
@@ -103,8 +102,10 @@ public class BookingResource {
                     return Response.ok(a).build();
             return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
         }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
+        catch (Exception e) {
+            logger.severe(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @GET
@@ -114,20 +115,21 @@ public class BookingResource {
         if (!this.usersUrl.isPresent())
             return Response.status(Response.Status.NOT_FOUND).entity("Users service cannot be reached.").build();
 
-        Booking booking = Database.getBooking(bookingId);
-        if(booking != null) {
-            //find info about owner
+        try {
+            Booking booking = bookingsBean.getBooking(bookingId);
             int userId = booking.getIdUser();
             User user =
                     client.target(this.usersUrl.get() + "/" + userId)
                             .request(MediaType.APPLICATION_JSON)
                             .get((new GenericType<User>() {}));
             if (user != null)
-                    return Response.ok(user).build();
+                return Response.ok(user).build();
             return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
         }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
+        catch (Exception e) {
+            logger.severe(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @POST
@@ -140,7 +142,8 @@ public class BookingResource {
         }
 
         try {
-            Database.addBooking(b);
+            //Database.addBooking(b);
+            bookingsBean.create(b);
             return Response.ok(b).build();
         }
         catch (Exception e){
@@ -154,7 +157,8 @@ public class BookingResource {
     public Response deleteBooking(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: deleteBooking.");
         try {
-            Database.deleteBooking(bookingId);
+            //Database.deleteBooking(bookingId);
+            bookingsBean.delete(bookingId);
             return Response.ok("Booking successfully deleted.").build();
         }
         catch (Exception e){
