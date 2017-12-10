@@ -20,7 +20,6 @@
         <kumuluzee-health.version>1.0.0-SNAPSHOT</kumuluzee-health.version>
         <kumuluzee-cors.version>1.0.2</kumuluzee-cors.version>
         <kumuluzee-metrics.version>1.0.0-SNAPSHOT</kumuluzee-metrics.version>
-        <kumuluzee-logs.version>1.3.0</kumuluzee-logs.version>
     </properties>
 
     <dependencyManagement>

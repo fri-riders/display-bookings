@@ -7,6 +7,8 @@ import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.database.Database;
 import com.fri.rso.fririders.displaybookings.entities.User;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 
@@ -20,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+
 
 
 @RequestScoped
@@ -31,7 +33,7 @@ import java.util.logging.Logger;
 @Metered
 public class BookingResource {
 
-    private static final Logger logger = Logger.getLogger( BookingResource.class.getName() );
+    private Logger logger = LogManager.getLogger( BookingResource.class.getName() );
 
     private static Client client = ClientBuilder.newClient();
 
@@ -67,7 +69,7 @@ public class BookingResource {
             return Response.ok(bookings).build();
         }
         else {
-            logger.warning("Zero bookings found");
+            logger.error("Zero bookings found");
             return Response.status(Response.Status.NOT_FOUND).entity("Zero bookings found.").build();
         }
     }
@@ -93,6 +95,7 @@ public class BookingResource {
 
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
+            logger.info("Calling accommodations service.");
             //find info about accommodation
             List<Accommodation> accommodations =
                     client.target(this.accommodationsUrl.get() + "/accommodations/all")
@@ -135,7 +138,7 @@ public class BookingResource {
         logger.info("REST CALL: addBooking.");
         // for etcd testing
         if(!configProperties.isInsertEnabled()){
-            logger.warning("Booking insertion is disabled.");
+            logger.error("Booking insertion is disabled.");
             return Response.status(Response.Status.FORBIDDEN).entity("Booking insertion is disabled.").build();
         }
 
@@ -144,7 +147,7 @@ public class BookingResource {
             return Response.ok(b).build();
         }
         catch (Exception e){
-            logger.warning(e.getMessage());
+            logger.error(e.getMessage());
             return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
         }
     }
@@ -158,7 +161,7 @@ public class BookingResource {
             return Response.ok("Booking successfully deleted.").build();
         }
         catch (Exception e){
-            logger.warning(e.getMessage());
+            logger.error(e.getMessage());
             return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
         }
     }

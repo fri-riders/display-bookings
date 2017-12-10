@@ -3,6 +3,8 @@ package com.fri.rso.fririders.displaybookings.resources;
 
 import com.fri.rso.fririders.displaybookings.config.ConfigProperties;
 import com.kumuluz.ee.common.runtime.EeRuntime;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,7 +12,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.logging.Logger;
 
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,7 +23,7 @@ public class HealthCheckResource {
     @Inject
     private ConfigProperties configProperties;
 
-    private static final Logger logger = Logger.getLogger( HealthCheckResource.class.getName() );
+    private static final Logger logger = LogManager.getLogger( HealthCheckResource.class.getName() );
 
 
     @GET
@@ -49,11 +50,12 @@ public class HealthCheckResource {
     public Response loadOrder(Integer n) {
         logger.info("Simulating heavy load ...");
 
+        long fib = 0;
         for (int i = 1; i <= n; i++) {
-            fibonacci(i);
+            fib = fibonacci(i);
         }
 
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(fib).build();
     }
 
     private long fibonacci(int n) {
