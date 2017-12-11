@@ -48,9 +48,9 @@ kumuluzee:
                           </Socket>
                       </Appenders>
                       <Loggers>
-                          <Logger name="com.fri.rso.fririders.displaybookings.resources.BookingResource" level="trace" additivity="false">
-                            <AppenderRef ref="console" level="info"/>
-                            <AppenderRef ref="logstash" level="info"/>
+                          <Logger name="com.fri.rso.fririders.displaybookings.resources.BookingResource" level="info" additivity="false">
+                            <AppenderRef ref="console"/>
+                            <AppenderRef ref="logstash"/>
                           </Logger>
                           <!-- Default logger -->
                           <Root level="all">
