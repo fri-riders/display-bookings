@@ -121,13 +121,16 @@ public class BookingResource {
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
             //find info about owner
-            int userId = booking.getIdUser();
+            String userId = booking.getIdUser();
+            logger.info("Calling user service ...");
             User user =
                     client.target(this.usersUrl.get() + "/" + userId)
                             .request(MediaType.APPLICATION_JSON)
                             .get((new GenericType<User>() {}));
-            if (user != null)
-                    return Response.ok(user).build();
+            if (user != null) {
+                logger.info("User with id" + userId+" successfully retrieved ...");
+                return Response.ok(user).build();
+            }
             return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
         }
         else
