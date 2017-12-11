@@ -10,6 +10,7 @@ import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 
 import javax.enterprise.context.RequestScoped;
@@ -29,7 +30,7 @@ import java.util.Optional;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("bookings")
-@Log
+@Log(LogParams.METRICS)
 @Metered
 public class BookingResource {
 
@@ -51,11 +52,11 @@ public class BookingResource {
     private static String accommodationsPort = "3001";
 
     @Inject
-    @DiscoverService(value = "rso-accommodations", version = "1.0.x", environment = "dev")
+    @DiscoverService(value = "accommodations", version = "1.0.x", environment = "dev")
     private Optional<String> accommodationsUrl;
 
     @Inject
-    @DiscoverService(value="rso-users", version = "1.0.x", environment = "dev")
+    @DiscoverService(value="rsousers", version = "1.0.x", environment = "dev")
     private Optional<String> usersUrl;
 
 
