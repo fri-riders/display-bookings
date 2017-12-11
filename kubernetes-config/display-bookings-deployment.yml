@@ -10,7 +10,7 @@ spec:
         app: display-bookings
     spec:
       containers:
-      - image: urosbajc/display-bookings
+      - image: urosbajc/display-bookings:latest
         name: display-bookings
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER

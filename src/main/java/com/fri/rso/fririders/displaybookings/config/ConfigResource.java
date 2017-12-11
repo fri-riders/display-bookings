@@ -33,10 +33,9 @@ public class ConfigResource {
         return Response.ok(response).build();
     }
 
-    //TODO: this should be @POST
-    @GET
-    @Path("bookingsInsert/{isEnabled}")
-    public Response bookingsInsert(@PathParam("isEnabled") boolean isEnabled){
+    @POST
+    @Path("/config/bookingsInsert")
+    public Response bookingsInsert(boolean isEnabled){
         properties.setInsertEnabled(isEnabled);
         return  Response.ok().entity("Bookings insertion is now: " + (isEnabled ? "enabled." : "disabled.")).build();
     }

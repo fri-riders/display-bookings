@@ -112,15 +112,15 @@ public class BookingResource {
     }
 
     @GET
-    @Path("/{bookingId}/owner")
-    public Response getBookingOwner(@PathParam("bookingId") int bookingId) {
-        logger.info("REST CALL: getBookingOwner.");
+    @Path("/{bookingId}/user")
+    public Response getBookingUser(@PathParam("bookingId") int bookingId) {
+        logger.info("REST CALL: getBookingUser.");
         if (!this.usersUrl.isPresent())
             return Response.status(Response.Status.NOT_FOUND).entity("Users service cannot be reached.").build();
 
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
-            //find info about owner
+            //find info about user
             String userId = booking.getIdUser();
             logger.info("Calling user service ...");
             User user =
@@ -131,7 +131,7 @@ public class BookingResource {
                 logger.info("User with id" + userId+" successfully retrieved ...");
                 return Response.ok(user).build();
             }
-            return Response.status(Response.Status.NOT_FOUND).entity("Accommodation for requested booking not found.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User of requested booking not found.").build();
         }
         else
             return Response.status(Response.Status.NOT_FOUND).entity("Booking with id " + bookingId + " not found.").build();
