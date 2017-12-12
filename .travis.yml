@@ -14,7 +14,7 @@ cache:
   - $HOME/.m2
 
 env:
-  - DOCKER_IMAGE = urosbajc/display-bookings:0.1
+  - DOCKER_IMAGE=urosbajc/display-bookings:0.1
 
 script:
   - mvn clean package -U
