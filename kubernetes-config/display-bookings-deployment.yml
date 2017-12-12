@@ -19,6 +19,8 @@ spec:
             value: http://consul:8500
           - name: KUMULUZEE_CONFIG_CONSUL_AGENT
             value: http://consul:8500
+          - name: KUMULUZEE_SERVER_BASEURL
+            value: http://169.51.13.134:30477
           #- name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           #  value: jdbc:postgresql://postgres-customers:5432/customer
         livenessProbe:
@@ -33,4 +35,4 @@ spec:
           protocol: TCP
         resources:
           requests:
-            cpu: 500m
+            cpu: 250m

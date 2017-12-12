@@ -7,6 +7,7 @@ services:
     environment:
       KUMULUZEE_CONFIG_CONSUL_AGENT: http://consul:8500
       KUMULUZEE_DISCOVERY_CONSUL_AGENT: http://consul:8500
+      KUMULUZEE_SERVER_BASEURL: http://display-bookings
     depends_on:
       - consul
   consul:
