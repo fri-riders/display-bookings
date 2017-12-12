@@ -41,16 +41,6 @@ public class BookingResource {
     @Inject
     private ConfigProperties configProperties;
 
-    /*
-    * 'accommodations' microservice url
-    * */
-    private static String accommodationsHost = "http://localhost";
-
-    /*
-    * 'accommodations' microservice port
-    * */
-    private static String accommodationsPort = "3001";
-
     @Inject
     @DiscoverService(value = "accommodations", version = "1.0.x", environment = "dev")
     private Optional<String> accommodationsUrl;
@@ -97,9 +87,12 @@ public class BookingResource {
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
             logger.info("Calling accommodations service.");
+            String url = this.accommodationsUrl.get() + "/accommodations/all";
+            logger.info("URL: " + url);
+
             //find info about accommodation
             List<Accommodation> accommodations =
-                    client.target(this.accommodationsUrl.get() + "/accommodations/all")
+                    client.target(url)
                             .request(MediaType.APPLICATION_JSON)
                             .get((new GenericType<List<Accommodation>>() {}));
             for(Accommodation a : accommodations)
@@ -120,11 +113,14 @@ public class BookingResource {
 
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
-            //find info about user
             String userId = booking.getIdUser();
             logger.info("Calling user service ...");
+            String url = this.usersUrl.get() + "/v1/users/" + userId;
+            logger.info("URL: " + url);
+
+            //find info about user
             User user =
-                    client.target(this.usersUrl.get() + "/" + userId)
+                    client.target(url)
                             .request(MediaType.APPLICATION_JSON)
                             .get((new GenericType<User>() {}));
             if (user != null) {
