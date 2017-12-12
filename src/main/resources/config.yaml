@@ -4,7 +4,7 @@ kumuluzee:
   env:
     name: dev
   server:
-  base-url: http://localhost:8080
+    base-url: http://localhost:8080
     http:
       port: 8080
   config:

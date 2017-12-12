@@ -20,7 +20,7 @@ spec:
           - name: KUMULUZEE_CONFIG_CONSUL_AGENT
             value: http://consul:8500
           - name: KUMULUZEE_SERVER_BASEURL
-            value: http://169.51.17.191:32279
+            value: http://display-bookings:8080
           #- name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           #  value: jdbc:postgresql://postgres-customers:5432/customer
         livenessProbe:
