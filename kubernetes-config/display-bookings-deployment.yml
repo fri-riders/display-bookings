@@ -10,15 +10,15 @@ spec:
         app: display-bookings
     spec:
       containers:
-      - image: urosbajc/display-bookings:0.2
+      - image: urosbajc/display-bookings:0.3
         name: display-bookings
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: bluemix
-          - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
-            value: http://consul:8500
-          - name: KUMULUZEE_CONFIG_CONSUL_AGENT
-            value: http://consul:8500
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
           - name: KUMULUZEE_SERVER_BASEURL
             value: http://display-bookings:8080
           #- name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
