@@ -46,7 +46,7 @@ public class BookingResource {
     private Optional<String> accommodationsUrl;
 
     @Inject
-    @DiscoverService(value="rsousers", version = "1.0.x", environment = "dev")
+    @DiscoverService(value="users", version = "1.0.x", environment = "dev")
     private Optional<String> usersUrl;
 
 

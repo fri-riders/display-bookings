@@ -10,13 +10,13 @@ kumuluzee:
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
-    consul:
-      agent: http://localhost:8500
+    etcd:
+      hosts: http://192.168.99.100:2379
   discovery:
     ttl: 20
     ping-interval: 15
-    consul:
-      agent: http://localhost:8500
+    etcd:
+      hosts: http://192.168.99.100:2379
   health:
     servlet:
       mapping: /health
