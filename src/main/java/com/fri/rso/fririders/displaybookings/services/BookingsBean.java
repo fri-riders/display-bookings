@@ -36,10 +36,6 @@ public class BookingsBean {
     private ConfigProperties configProperties;
 
     @Inject
-    @DiscoverService(value = "accommodations", version = "1.0.x", environment = "dev")
-    private Optional<String> accommodationsUrl;
-
-    @Inject
     @DiscoverService(value="users", version = "1.0.x", environment = "dev")
     private Optional<String> usersUrl;
 
@@ -66,37 +62,31 @@ public class BookingsBean {
     @Fallback(fallbackMethod = "getBookingsAccommodationFallback")
     @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     public Accommodation getBookingAccommodation(int bookingId) {
-        if (this.accommodationsUrl.isPresent()){
-            Booking booking = Database.getBooking(bookingId);
-            if(booking != null) {
-                try {
-                    logger.info("Calling accommodations service.");
-                    String url = this.accommodationsUrl.get() + "/accommodations/all";
-                    logger.info("URL: " + url);
+        Booking booking = Database.getBooking(bookingId);
+        if(booking != null) {
+            try {
+                logger.info("Calling accommodations service.");
+                String url = "http://accommodations:8081/v1/accommodations";
+                logger.info("URL: " + url);
 
-                    //find info about accommodation
-                    List<Accommodation> accommodations =
-                            client.target(url)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .get((new GenericType<List<Accommodation>>() {
-                                    }));
-                    for (Accommodation a : accommodations)
-                        if (a.getId() == booking.getId())
-                            return a;
-                    return null;
-                }
-                catch (WebApplicationException | ProcessingException e) {
-                    logger.error(e);
-                    throw new InternalServerErrorException(e);
-                }
-            }
-            else
+                //find info about accommodation
+                List<Accommodation> accommodations =
+                        client.target(url)
+                                .request(MediaType.APPLICATION_JSON)
+                                .get((new GenericType<List<Accommodation>>() {
+                                }));
+                for (Accommodation a : accommodations)
+                    if (a.getId() == booking.getId())
+                        return a;
                 return null;
+            }
+            catch (WebApplicationException | ProcessingException e) {
+                logger.error(e);
+                throw new InternalServerErrorException(e);
+            }
         }
-        else{
-            logger.error("Accommodations service not reachable.");
+        else
             return null;
-        }
     }
 
     public Object getBookingsAccommodationFallback(int bookingId) {
