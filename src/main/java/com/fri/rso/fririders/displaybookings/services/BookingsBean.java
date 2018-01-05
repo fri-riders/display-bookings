@@ -6,6 +6,7 @@ import com.fri.rso.fririders.displaybookings.entities.Accommodation;
 import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.entities.User;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.discovery.enums.AccessType;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
@@ -36,7 +37,7 @@ public class BookingsBean {
     private ConfigProperties configProperties;
 
     @Inject
-    @DiscoverService(value="users", version = "1.0.x", environment = "dev")
+    @DiscoverService(value="users", version = "*", environment = "dev", accessType = AccessType.DIRECT)
     private Optional<String> usersUrl;
 
 
@@ -103,20 +104,23 @@ public class BookingsBean {
             Booking booking = Database.getBooking(bookingId);
             if(booking != null) {
                 try {
-                    String userId = booking.getIdUser();
+                    int userId = booking.getIdUser();
                     logger.info("Calling user service ...");
-                    String url = this.usersUrl.get() + "/v1/users/" + userId;
+                    String url = this.usersUrl.get() + "/v1/users";
                     logger.info("URL: " + url);
 
                     //find info about user
-                    User user =
+                    List<User> users =
                             client.target(url)
                                     .request(MediaType.APPLICATION_JSON)
-                                    .get((new GenericType<User>() {
+                                    .get((new GenericType<List<User>>() {
                                     }));
-                    if (user != null) {
+                    if (users != null || users.size() != 0) {
                         logger.info("User with id" + userId + " successfully retrieved ...");
-                        return user;
+                        for(int i = 0; i < users.size(); i++){
+                            if (i == userId)
+                                return users.get(i);
+                        }
                     }
                     return null;
                 }

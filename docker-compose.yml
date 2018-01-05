@@ -12,12 +12,12 @@ services:
       - etcd
       - users
 
-  consul:
-    image: consul
-    ports:
-      - 8400:8400
-      - 8500:8500
-      - 8600:8600
+#  consul:
+#    image: consul
+#    ports:
+#      - 8400:8400
+#      - 8500:8500
+#      - 8600:8600
 
   etcd:
       image: elcolio/etcd:2.0.10
@@ -37,7 +37,7 @@ services:
       - etcd
 
   users:
-    image: tomisebjanic/rso-users:0.10
+    image: tomisebjanic/rso-users:0.8
     ports:
       - 8082:8082
     environment:
@@ -57,12 +57,12 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: rsouser
 
-  accommodations:
-    image: janerz6/accommodations:0.6
-    ports:
-      - 8081:8081
-    environment:
-      - CONFIG_SERVER_URL =http://consul:8500
-      - DISCOVERY_HOSTNAME =accommodations
-    depends_on:
-      - consul
+#  accommodations:
+#    image: janerz6/accommodations:0.6
+#    ports:
+#      - 8081:8081
+#    environment:
+#      - CONFIG_SERVER_URL =http://consul:8500
+#      - DISCOVERY_HOSTNAME =accommodations
+#    depends_on:
+#      - consul

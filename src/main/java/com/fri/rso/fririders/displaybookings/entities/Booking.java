@@ -5,19 +5,19 @@ import java.util.Date;
 public class Booking {
     private int id;
     private int idAccommodation;
-    private String idUser;
+    private int idUser;
     private Date fromDate;
     private Date toDate;
 
     public Booking(){
         this.id = 0;
         this.idAccommodation = 0;
-        this.idUser = null;
+        this.idUser = 0;
         this.fromDate = null;
         this.toDate = null;
     }
 
-    public Booking(int id, int idAccommodation, String idUser, Date fromDate, Date toDate) {
+    public Booking(int id, int idAccommodation, int idUser, Date fromDate, Date toDate) {
         this.id = id;
         this.idAccommodation = idAccommodation;
         this.idUser = idUser;
@@ -41,11 +41,11 @@ public class Booking {
         this.idAccommodation = idAcommodation;
     }
 
-    public String getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 
