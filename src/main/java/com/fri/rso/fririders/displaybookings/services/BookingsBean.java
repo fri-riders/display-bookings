@@ -7,6 +7,7 @@ import com.fri.rso.fririders.displaybookings.entities.Booking;
 import com.fri.rso.fririders.displaybookings.entities.User;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.discovery.enums.AccessType;
+import com.kumuluz.ee.fault.tolerance.annotations.CommandKey;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
@@ -92,15 +93,17 @@ public class BookingsBean {
 
     public Object getBookingsAccommodationFallback(int bookingId) {
         logger.warn("getBookingsAccommodationFallback called.");
-        return null;
+        Accommodation a = new Accommodation(1, "N/A", "N/A", "N/A", 0, 0.0);
+        return a;
     }
 
 
     @CircuitBreaker(requestVolumeThreshold = 2)
     @Fallback(fallbackMethod = "getBookingUserFallback")
-    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
+    @CommandKey("http-booking-user")
+    @Timeout(value = 1, unit = ChronoUnit.SECONDS)
     public User getBookingUser(int bookingId) {
-        if (!this.usersUrl.isPresent()){
+        if (this.usersUrl.isPresent()){
             Booking booking = Database.getBooking(bookingId);
             if(booking != null) {
                 try {
@@ -140,7 +143,10 @@ public class BookingsBean {
 
     public Object getBookingUserFallback(int bookingId) {
         logger.warn("getBookingUserFallback called.");
-        return null;
+        User u = new User();
+        u.setFirstName("N/A");
+        u.setLastName("N/A");
+        return u;
     }
 
     public boolean addBooking(Booking b){

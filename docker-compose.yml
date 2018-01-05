@@ -37,7 +37,7 @@ services:
       - etcd
 
   users:
-    image: tomisebjanic/rso-users:0.8
+    image: tomisebjanic/rso-users:0.10
     ports:
       - 8082:8082
     environment:
@@ -56,6 +56,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: rsouser
+
+  messaging:
+    image: urosbajc/messaging:0.1
+    ports:
+      - 8086:8086
+    environment:
+      KUMULUZEE_CONFIG_ETCD_HOSTS: http://etcd:2379
+      KUMULUZEE_DISCOVERY_ETCD_HOSTS: http://etcd:2379
+      KUMULUZEE_SERVER_BASEURL: http://messaging:8086
+    depends_on:
+      - etcd
+      - users
 
 #  accommodations:
 #    image: janerz6/accommodations:0.6

@@ -13,6 +13,7 @@ import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
 import com.kumuluz.ee.logs.cdi.LogParams;
 import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -36,8 +37,6 @@ import java.util.Optional;
 public class BookingResource {
 
     private Logger logger = LogManager.getLogger( BookingResource.class.getName() );
-
-    private static Client client = ClientBuilder.newClient();
 
     @Inject
     private ConfigProperties configProperties;
@@ -75,6 +74,7 @@ public class BookingResource {
 
     @GET
     @Path("/{bookingId}/accommodation")
+    @Timed(name = "get_booking_accommodation")
     public Response getBookingAccommodation(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: getBookingAccommodation.");
         try {
@@ -93,6 +93,7 @@ public class BookingResource {
 
     @GET
     @Path("/{bookingId}/user")
+    @Timed(name = "get_booking_user")
     public Response getBookingUser(@PathParam("bookingId") int bookingId) {
         logger.info("REST CALL: getBookingUser.");
         try {
