@@ -37,6 +37,8 @@ public class BookingsBean {
     @Inject
     private ConfigProperties configProperties;
 
+    @Inject AuthBean authBean;
+
     @Inject
     @DiscoverService(value="users", version = "*", environment = "dev", accessType = AccessType.DIRECT)
     private Optional<String> usersUrl;
@@ -112,9 +114,12 @@ public class BookingsBean {
                     String url = this.usersUrl.get() + "/v1/users";
                     logger.info("URL: " + url);
 
+                    String token = authBean.getAuthToken();
+
                     //find info about user
                     List<User> users =
                             client.target(url)
+                                    .property("authToken", token)
                                     .request(MediaType.APPLICATION_JSON)
                                     .get((new GenericType<List<User>>() {
                                     }));
