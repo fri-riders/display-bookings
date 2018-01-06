@@ -107,7 +107,7 @@ public class BookingsBean {
             Booking booking = Database.getBooking(bookingId);
             if(booking != null) {
                 try {
-                    int userId = booking.getIdUser();
+                    String userId = booking.getIdUser();
                     logger.info("Calling user service ...");
                     String url = this.usersUrl.get() + "/v1/users";
                     logger.info("URL: " + url);
@@ -120,9 +120,9 @@ public class BookingsBean {
                                     }));
                     if (users != null || users.size() != 0) {
                         logger.info("User with id" + userId + " successfully retrieved ...");
-                        for(int i = 0; i < users.size(); i++){
-                            if (i == userId)
-                                return users.get(i);
+                        for(User u : users){
+                            if (u.getUuid() == userId)
+                                return u;
                         }
                     }
                     return null;

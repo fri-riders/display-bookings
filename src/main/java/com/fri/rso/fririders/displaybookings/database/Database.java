@@ -16,10 +16,10 @@ public class Database {
 
     // fake bookings
     static {
-        bookings.add(new Booking(1,1,1 ,new Date(), new Date()));
-        bookings.add(new Booking(2,2,2 ,new Date(), new Date()));
-        bookings.add(new Booking(3,3,3 ,new Date(), new Date()));
-        bookings.add(new Booking(1,1,1 ,new Date(), new Date()));
+        bookings.add(new Booking(1,1,"1bd484ed-b5ab-4f88-b57e-3c167d53ecb2" ,new Date(), new Date()));
+        bookings.add(new Booking(2,2,"1b9aec27-b80c-4baa-8467-2d0a89c5640c" ,new Date(), new Date()));
+        bookings.add(new Booking(3,3,"88eaeccc-7b77-439f-bba8-2525d2daa7f7" ,new Date(), new Date()));
+        bookings.add(new Booking(4,1,"1bd484ed-b5ab-4f88-b57e-3c167d53ecb2" ,new Date(), new Date()));
     }
 
     public static Booking getBooking(int bookingId) {

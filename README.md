@@ -1,5 +1,7 @@
 # Display bookings service
 
+`Last version: 0.4`
+
 ## IBM CLOUD
 
 ### Info
