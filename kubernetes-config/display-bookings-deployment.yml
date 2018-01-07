@@ -10,7 +10,7 @@ spec:
         app: display-bookings
     spec:
       containers:
-      - image: urosbajc/display-bookings:0.6
+      - image: urosbajc/display-bookings:0.6.1
         name: display-bookings
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -21,8 +21,6 @@ spec:
             value: http://etcd:2379
           - name: KUMULUZEE_SERVER_BASEURL
             value: http://display-bookings:8080
-          #- name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          #  value: jdbc:postgresql://postgres-customers:5432/customer
         livenessProbe:
           httpGet:
             path: /health
