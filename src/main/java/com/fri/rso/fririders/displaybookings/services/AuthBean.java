@@ -1,4 +1,4 @@
-package com.fri.rso.fririders.recommendations.services;
+package com.fri.rso.fririders.displaybookings.services;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
