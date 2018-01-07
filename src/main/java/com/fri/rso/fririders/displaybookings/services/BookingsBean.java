@@ -100,7 +100,7 @@ public class BookingsBean {
                                 .get((new GenericType<List<Accommodation>>() {
                                 }));
                 for (Accommodation a : accommodations)
-                    if (a.getId() == booking.getId())
+                    if (a.getId() == booking.getIdAccommodation())
                         return a;
                 return null;
             }
