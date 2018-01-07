@@ -1,6 +1,6 @@
 # Display bookings service
 
-`Last version: 0.5`
+`Last version: 0.6`
 
 ## IBM CLOUD
 
