@@ -27,6 +27,8 @@ Example call: `{IP}:8080/v1/bookings`
 ### Bookings
 * `GET: /v1/bookings` Returns list of all bookings
 * `GET: /v1/bookings/{bookingId}` Returns booking with appropriate id
+* `GET: /v1/bookings/user/{userId}` Returns users bookings
+* `GET: /v1/bookings/accommodation/{accId}` Returns accommodations bookings
 * `GET: /v1/bookings/{bookingId}/accommodation` Returns info about booking accommodation
 * `GET: /v1/bookings/{bookingId}/user` Returns info about the user who has made booking with id `bookingId`
 * `POST: /v1/bookings` Creates new booking

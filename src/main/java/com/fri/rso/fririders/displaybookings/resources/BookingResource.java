@@ -73,6 +73,30 @@ public class BookingResource {
     }
 
     @GET
+    @Path("/user/{userId}")
+    public Response getUserBookings(@PathParam("userId") String userId) {
+        logger.info("REST CALL: getUserBookings.");
+        List<Booking> bookings = bookingsBean.getUserBookings(userId);
+        if(bookings != null) {
+            return Response.ok(bookings).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity("User has not made any bookings yet.").build();
+    }
+
+    @GET
+    @Path("/accommodation/{accommodationId}")
+    public Response getAccommodationBookings(@PathParam("accommodationId") long aId) {
+        logger.info("REST CALL: getAccommodationBookings.");
+        List<Booking> bookings = bookingsBean.getAccommodationBookings(aId);
+        if(bookings != null) {
+            return Response.ok(bookings).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity("This accommodation has not been booked yet.").build();
+    }
+
+    @GET
     @Path("/{bookingId}/accommodation")
     @Timed(name = "get_booking_accommodation")
     public Response getBookingAccommodation(@PathParam("bookingId") int bookingId) {

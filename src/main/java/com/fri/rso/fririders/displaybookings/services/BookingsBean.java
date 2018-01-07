@@ -62,9 +62,27 @@ public class BookingsBean {
         return booking;
     }
 
+    public List<Booking> getUserBookings(String userId){
+        List<Booking> bookings = new ArrayList<>();
+        for(Booking b : Database.getBookings()){
+            if(b.getIdUser().equals(userId))
+                bookings.add(b);
+        }
+        return bookings;
+    }
+
+    public List<Booking> getAccommodationBookings(long aId){
+        List<Booking> bookings = new ArrayList<>();
+        for(Booking b : Database.getBookings()){
+            if(b.getIdAccommodation() == aId)
+                bookings.add(b);
+        }
+        return bookings;
+    }
+
     @CircuitBreaker(requestVolumeThreshold = 2)
     @Fallback(fallbackMethod = "getBookingsAccommodationFallback")
-    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 1, unit = ChronoUnit.SECONDS)
     public Accommodation getBookingAccommodation(int bookingId) {
         Booking booking = Database.getBooking(bookingId);
         if(booking != null) {
@@ -93,7 +111,7 @@ public class BookingsBean {
             return null;
     }
 
-    public Object getBookingsAccommodationFallback(int bookingId) {
+    public Accommodation getBookingsAccommodationFallback(int bookingId) {
         logger.warn("getBookingsAccommodationFallback called.");
         Accommodation a = new Accommodation(1, "N/A", "N/A", "N/A", 0, 0.0);
         return a;
@@ -124,9 +142,9 @@ public class BookingsBean {
                                     .get((new GenericType<List<User>>() {
                                     }));
                     if (users != null || users.size() != 0) {
-                        logger.info("User with id" + userId + " successfully retrieved ...");
+                        logger.info("List of users successfully retrieved ...");
                         for(User u : users){
-                            if (u.getUuid() == userId)
+                            if (u.getUuid().equals(userId))
                                 return u;
                         }
                     }
@@ -146,7 +164,7 @@ public class BookingsBean {
         }
     }
 
-    public Object getBookingUserFallback(int bookingId) {
+    public User getBookingUserFallback(int bookingId) {
         logger.warn("getBookingUserFallback called.");
         User u = new User();
         u.setFirstName("N/A");
