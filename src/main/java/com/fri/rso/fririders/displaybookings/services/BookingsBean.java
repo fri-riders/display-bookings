@@ -10,6 +10,7 @@ import com.kumuluz.ee.discovery.enums.AccessType;
 import com.kumuluz.ee.fault.tolerance.annotations.CommandKey;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
+import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestScoped
+@Log
 public class BookingsBean {
 
     private Logger logger = LogManager.getLogger(BookingsBean.class.getName());

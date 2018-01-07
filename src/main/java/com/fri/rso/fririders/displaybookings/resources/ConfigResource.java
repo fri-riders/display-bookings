@@ -1,7 +1,9 @@
-package com.fri.rso.fririders.displaybookings.config;
+package com.fri.rso.fririders.displaybookings.resources;
 
+import com.fri.rso.fririders.displaybookings.config.ConfigProperties;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
+import com.kumuluz.ee.logs.cdi.Log;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.Response;
 @Path("/config")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Log
 public class ConfigResource {
     @Inject
     private ConfigProperties properties;
@@ -26,7 +29,7 @@ public class ConfigResource {
         logger.info("Is insert enabled: " + properties.isInsertEnabled());
 
         String response =
-                "{\"Insert enabled\": %b}{\"Instance healthy\": %b}";
+                "{\"Insert enabled\": %b,\"Instance healthy\": %b}";
 
         response = String.format(
                 response,
